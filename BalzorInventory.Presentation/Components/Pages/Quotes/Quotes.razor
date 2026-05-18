@@ -1,0 +1,37 @@
+﻿@page "/quotes";
+
+@using BalzorInventory.usecases.UseCases.Quotes.QuotesInterfaces
+@using Domain.Entities;
+
+<section>
+    <h3>Quotes</h3>
+
+    @if (MyQuotes is not null)
+    {
+        <ul>
+            @foreach (var quote in MyQuotes)
+            {
+                <li class="text-danger p-2">@(quote.Title)</li>
+            }
+        </ul>
+    }
+
+
+</section>
+
+@code {
+
+    [Inject]
+    private IViewAllQuotesUseCase _ViewAllQuotesUseCase { get; set; }
+
+    public List<Quote> MyQuotes { get; set; } = new List<Quote>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var quotes = await _ViewAllQuotesUseCase.ExecuteAsync();
+        if (quotes is not null)
+        {
+            MyQuotes = [.. quotes];
+        }
+    }
+}

@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Databases/">
+    <Project Path="Databases/BalzorInventory.database_01/BalzorInventory.database_01.csproj" />
+  </Folder>
+  <Project Path="BalzorInventory.Domain/BalzorInventory.Domain.csproj" />
+  <Project Path="BalzorInventory.Presentation/BalzorInventory.Presentation.csproj" />
+  <Project Path="BalzorInventory.usecases/BalzorInventory.usecases.csproj" />
+</Solution>
