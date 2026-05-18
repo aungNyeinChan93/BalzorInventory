@@ -1,34 +1,46 @@
 ﻿@page "/inventories"
-
-@using usecases.UseCases.Inventories.InventoriesUseCaseInterface;
 @inject IViewInventoriesUseCase _IViewInventoriesUseCase;
 
+<HeadContent>
+    <PageTitle>Inventory Lists</PageTitle>
+    @foreach (var inv in MyInventories)
+    {
+        <meta @key="inv.InventoryId" name="@inv.Name" price="@inv.Price"/>
+    }
+</HeadContent>
+
 <section>
-    <h3>Inventories</h3>
+    <a href="/createInventory">Create Inventory</a>
     @if (MyInventories is null)
     {
         <p>Loading  ...</p>
     }
     else
     {
-        <ul>
-            @foreach (var inv in MyInventories)
-            {
-                <li @key="inv.InventoryId" class="text-primary p-2">@(inv.Name)</li>
-            }
-        </ul>
-    }
+        <div class="my-4 p-2">
+            <SerachInventoryComponent GetSearchKeyEvent="GetSearchKey" />
+            <InventoryListComponent Inventories="MyInventories"/>
+        </div>
+    }   
 </section>
 
 @code {
     public List<Inventory> MyInventories { get; set; } = [];
 
+    public async Task GetSearchKey(string? inventoryName = "")
+    {
+        var inventories = inventoryName is null
+            ? await _IViewInventoriesUseCase.ViewAllInventories()
+            : await _IViewInventoriesUseCase.ViewAllInventories(inventoryName);
+
+        MyInventories = inventories is not null
+            ? [.. inventories]
+            : [];
+
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        var inventories = await _IViewInventoriesUseCase.ViewAllInventories();
-        if (inventories is not null)
-        {
-            MyInventories = [.. inventories];
-        }
+        await GetSearchKey();
     }
 }

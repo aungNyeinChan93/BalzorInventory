@@ -1,0 +1,14 @@
+﻿
+
+<tr>
+    <th scope="row">@inventory.Name</th>
+    <td>@inventory.Price</td>
+    <td>@inventory.Quantity</td>
+    <td></td>
+</tr>
+
+
+@code {
+    [Parameter]
+    public Inventory inventory { get; set; } = new Inventory();
+}

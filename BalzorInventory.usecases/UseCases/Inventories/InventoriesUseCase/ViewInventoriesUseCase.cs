@@ -22,5 +22,20 @@ namespace BalzorInventory.usecases.UseCases.Inventories.InventoriesUseCase
             var inventories = await _inventoryService.GetAllInventoriesAsync();
             return inventories;
         }
+
+        public async Task<List<Inventory>> ViewAllInventories(string? inventoryName = "")
+        {
+            if (!string.IsNullOrEmpty(inventoryName))
+            {
+                var inventories = await _inventoryService.GetInventoriesByNameAsync(inventoryName);
+                if (inventories is null) return null!;
+                return inventories;
+            }
+            else
+            {
+                var inventories = await _inventoryService.GetAllInventoriesAsync();
+                return inventories;
+            }
+        }
     }
 }

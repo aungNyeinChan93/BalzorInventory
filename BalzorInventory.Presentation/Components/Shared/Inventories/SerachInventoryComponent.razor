@@ -1,0 +1,20 @@
+﻿
+
+
+
+<section>
+    <p>@SearchKey</p>
+    <div class="input-group mb-3">
+        <input type="text" @bind-value="SearchKey" @bind-value:event="oninput" class="form-control" placeholder="Search ...">
+        <button @onclick="()=> GetSearchKeyEvent.InvokeAsync(SearchKey)" class="btn btn-outline-secondary p-2" type="button" id="button-addon2">Search</button>
+    </div>
+</section>
+
+@code {
+    public string SearchKey { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> GetSearchKeyEvent { get; set; }
+
+   
+}

@@ -1,0 +1,56 @@
+﻿@page "/createInventory"
+
+@inject NavigationManager _NavigationManager;
+@inject ICreateInventoryUseCase _CreateInventoryUseCase;
+
+<HeadContent>
+    <PageTitle>Create Inventory</PageTitle>
+</HeadContent>
+
+<section>
+    <h3>InventoryCreate</h3>
+
+    <div class="P-2 container mx-auto">
+        <EditForm Model="Inventory" FormName="createInventory" OnValidSubmit="OnSubmitCreateInventory">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input @bind-value="@Inventory.Name" type="text" class="form-control" id="name">
+                <ValidationMessage For="()=> Inventory.Name"/>
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input @bind-value="Inventory.Price" type="number" class="form-control" id="price">
+                <ValidationMessage For="() => Inventory.Price" />
+
+            </div>
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity</label>
+                <input @bind-value="Inventory.Quantity" type="number" class="form-control" id="quantity">
+                <ValidationMessage For="() => Inventory.Quantity" />
+
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-primary">
+            </div>
+        </EditForm>
+    </div>
+</section>
+
+@code {
+
+    [SupplyParameterFromForm(FormName = "createInventory")]
+    public Inventory Inventory { get; set; } = new Inventory();
+
+    private async Task OnSubmitCreateInventory()
+    {
+        var dto = new CreateInventoryDto { Name = Inventory.Name, Price = Inventory.Price, Quantity = Inventory.Quantity };
+        var isCreateSuccess = await _CreateInventoryUseCase.ExecuteAsync(dto);
+        if (isCreateSuccess)
+        {
+            _NavigationManager.NavigateTo("/inventories");
+        }
+    }
+
+}

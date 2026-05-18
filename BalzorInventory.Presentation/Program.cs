@@ -21,8 +21,10 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddScoped<IQuoteService, QuoteService>();
 builder.Services.AddScoped<IViewAllQuotesUseCase,ViewAllQuotesUseCase>();
+
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<IViewInventoriesUseCase,ViewInventoriesUseCase>();
+builder.Services.AddTransient<ICreateInventoryUseCase, CreateInventoryUseCase>();
 
 
 var app = builder.Build();

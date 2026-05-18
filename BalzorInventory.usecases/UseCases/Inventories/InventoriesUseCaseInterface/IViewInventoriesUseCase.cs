@@ -5,5 +5,7 @@ namespace BalzorInventory.usecases.UseCases.Inventories.InventoriesUseCaseInterf
     public interface IViewInventoriesUseCase
     {
         Task<List<Inventory>> ViewAllInventories();
+
+        Task<List<Inventory>> ViewAllInventories(string? inventoryName = "");
     }
 }
