@@ -2,6 +2,8 @@ using BalzorInventory.database_01.Data;
 using BalzorInventory.database_01.Services;
 using BalzorInventory.Presentation.Components;
 using BalzorInventory.usecases.ServiceInterfaces;
+using BalzorInventory.usecases.UseCases.Inventories.InventoriesUseCase;
+using BalzorInventory.usecases.UseCases.Inventories.InventoriesUseCaseInterface;
 using BalzorInventory.usecases.UseCases.Quotes;
 using BalzorInventory.usecases.UseCases.Quotes.QuotesInterfaces;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,8 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddScoped<IQuoteService, QuoteService>();
 builder.Services.AddScoped<IViewAllQuotesUseCase,ViewAllQuotesUseCase>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<IViewInventoriesUseCase,ViewInventoriesUseCase>();
 
 
 var app = builder.Build();

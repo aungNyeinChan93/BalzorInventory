@@ -14,5 +14,7 @@ namespace BalzorInventory.database_01.Data
         }
 
         public DbSet<Quote> Quotes { get; set; }
+
+        public DbSet<Inventory> Inventories { get; set; }
     }
 }

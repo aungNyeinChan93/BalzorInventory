@@ -1,0 +1,34 @@
+﻿@page "/inventories"
+
+@using usecases.UseCases.Inventories.InventoriesUseCaseInterface;
+@inject IViewInventoriesUseCase _IViewInventoriesUseCase;
+
+<section>
+    <h3>Inventories</h3>
+    @if (MyInventories is null)
+    {
+        <p>Loading  ...</p>
+    }
+    else
+    {
+        <ul>
+            @foreach (var inv in MyInventories)
+            {
+                <li @key="inv.InventoryId" class="text-primary p-2">@(inv.Name)</li>
+            }
+        </ul>
+    }
+</section>
+
+@code {
+    public List<Inventory> MyInventories { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var inventories = await _IViewInventoriesUseCase.ViewAllInventories();
+        if (inventories is not null)
+        {
+            MyInventories = [.. inventories];
+        }
+    }
+}
