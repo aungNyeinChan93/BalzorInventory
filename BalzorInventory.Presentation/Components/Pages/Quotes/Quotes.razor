@@ -1,7 +1,14 @@
 ﻿@page "/quotes";
 
-@using BalzorInventory.usecases.UseCases.Quotes.QuotesInterfaces
-@using Domain.Entities;
+
+<PageTitle>Quotes</PageTitle>
+
+<HeadContent>
+    @foreach (var q in MyQuotes)
+    {
+        <meta name="@q.Title" description="@(q.Description)"  />
+    }
+</HeadContent>
 
 <section>
     <h3>Quotes</h3>
@@ -15,6 +22,10 @@
             }
         </ul>
     }
+    else
+    {
+        <p>Loading ... </p>
+    }
 
 
 </section>
@@ -24,7 +35,7 @@
     [Inject]
     private IViewAllQuotesUseCase _ViewAllQuotesUseCase { get; set; }
 
-    public List<Quote> MyQuotes { get; set; } = new List<Quote>();
+    public List<Quote> MyQuotes { get; set; } = [];
 
     protected override async Task OnInitializedAsync()
     {
