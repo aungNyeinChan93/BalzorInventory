@@ -1,0 +1,87 @@
+﻿@page "/servers/edit/{id:int}"
+@inject ServerService _ServerService;
+@inject CityService _CityService;
+@inject NavigationManager _NavigationManager;
+
+<section>
+    <h3>ServerEdiit - @Id</h3>
+
+    <EditForm Model="Server" FormName="serverEdit" OnValidSubmit="UpdateServer">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        <input type="hidden" @bind-value="@Server.ServerId"/>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input @bind-value="Server.Name" type="text" class="form-control" id="name">
+        </div>
+        <div class="mb-3">
+            <input type="checkbox" checked="@Server.IsOnline" @bind-value="Server.IsOnline"/>
+        </div>
+        <div class="mb-3">
+            <select @bind="Server.City" class="form-select" aria-label="Default select example">
+                <option selected>Open this select menu</option>
+                @foreach (var city in Cities)
+                {
+                    <option value="@city.Name">@city.Name</option>
+                }
+                
+            </select>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-warning">Edit Server </button>
+        </div>
+    </EditForm>
+
+
+
+</section>
+
+<pre>
+        @(JsonSerializer.Serialize(Server, new JsonSerializerOptions() { WriteIndented = true }))
+    </pre>
+
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm(FormName = "serverEdit")]
+    public ServerDto Server { get; set; } = new ServerDto();
+
+    public List<City> Cities { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await this.LoadServerAsync(Id);
+        await this.LoadCitiesAsync();
+    }
+
+    private async Task LoadServerAsync(int id)
+    {
+        var response = await _ServerService.GetByIdAsync(id);
+        if (response.ResponseStatus)
+        {
+            Server = response.Data!;
+        }
+    }
+
+    private async Task LoadCitiesAsync()
+    {
+        var response = await _CityService.GetAllAsync();
+        if (response.ResponseStatus)
+        {
+            Cities = [.. response.Data!];
+        }
+    }
+
+    private async Task UpdateServer()
+    {
+        var result = await _ServerService.UpdateAsync(Server);
+        if (result)
+        {
+            _NavigationManager.NavigateTo("/servers");
+        }
+    }
+}

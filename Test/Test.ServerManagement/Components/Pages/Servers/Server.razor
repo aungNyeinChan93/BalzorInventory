@@ -1,0 +1,66 @@
+﻿@page "/servers"
+@inject ServerService _ServerService;
+@inject CityService _CityService;
+
+
+<section>
+    <div class="justify-content-start d-flex">
+        @foreach (var city in Cities)
+        {
+            <div class="border-danger mx-3 rounded border p-3 text-center">
+                <img class="" src="@Assets[$"/Images/Cities/{city.Name}.jpg"]" width="200" alt="city" />
+                <h4 class="my-2">
+                    <a href="@city.CityId" class="mx-2"><span class="badge text-bg-primary">@city.Name</span></a>
+                </h4>
+            </div>
+        }
+    </div>
+    
+    @if (Servers is not null)
+    {
+        <ul>
+            @foreach (var server in Servers)
+            {
+                <li  class="p-2 @(server.IsOnline ? "text-success":"text-danger")">
+                    @server.Name in @(server.City)
+                    <span>
+                        <a href="@($"/servers/edit/{server.ServerId}")" class="btn btn-link">Edit</a>
+                    </span>
+                </li>
+            }
+        </ul>
+    }
+</section>
+
+
+
+@code {
+
+    public List<ServerDto> Servers { get; set; } = [];
+
+    public List<City> Cities { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await _ServerService.GetALLAsync();
+        if (response.ResponseStatus )
+        {
+            if (response.Data is not null || response.Data!.Count >0)
+            {
+                Servers = [.. response.Data];
+            }
+        }
+
+        await this.LoadCityies();
+
+    }
+
+    private async Task LoadCityies()
+    {
+        var response = await _CityService.GetAllAsync();
+        if (response.ResponseStatus)
+        {
+            Cities = [.. response.Data!];
+        }
+    }
+}

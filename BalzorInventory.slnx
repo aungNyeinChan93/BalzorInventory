@@ -2,6 +2,9 @@
   <Folder Name="/Databases/">
     <Project Path="Databases/BalzorInventory.database_01/BalzorInventory.database_01.csproj" />
   </Folder>
+  <Folder Name="/Test/">
+    <Project Path="Test/Test.ServerManagement/Test.ServerManagement.csproj" Id="c6646cc9-e12c-4665-9779-99f6cc5b38c3" />
+  </Folder>
   <Project Path="BalzorInventory.Domain/BalzorInventory.Domain.csproj" />
   <Project Path="BalzorInventory.Presentation/BalzorInventory.Presentation.csproj" />
   <Project Path="BalzorInventory.usecases/BalzorInventory.usecases.csproj" />
