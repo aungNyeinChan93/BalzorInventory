@@ -1,10 +1,12 @@
 ﻿@page "/servers/edit/{id:int}"
+@* @page "/servers/edit/{id:int}" *@    
+
 @inject ServerService _ServerService;
 @inject CityService _CityService;
 @inject NavigationManager _NavigationManager;
 
 <section>
-    <h3>ServerEdiit - @Id</h3>
+    <h3>ServerEdiit - @Id || @PageNumber</h3>
 
     <EditForm Model="Server" FormName="serverEdit" OnValidSubmit="UpdateServer">
         <DataAnnotationsValidator/>
@@ -47,6 +49,10 @@
     [Parameter]
     public int Id { get; set; }
 
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int PageNumber { get; set; } 
+
     [SupplyParameterFromForm(FormName = "serverEdit")]
     public ServerDto Server { get; set; } = new ServerDto();
 
@@ -54,8 +60,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await this.LoadServerAsync(Id);
+        // await this.LoadServerAsync(Id);
         await this.LoadCitiesAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await this.LoadServerAsync(Id);
+        // await this.LoadCitiesAsync();
     }
 
     private async Task LoadServerAsync(int id)

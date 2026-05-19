@@ -21,7 +21,7 @@
         <ul>
             @foreach (var server in Servers)
             {
-                <li  class="p-2 @(server.IsOnline ? "text-success":"text-danger")">
+                <li @key="server.ServerId"  class="p-2 @(server.IsOnline ? "text-success":"text-danger")">
                     @server.Name in @(server.City)
                     <span>
                         <a href="@($"/servers/edit/{server.ServerId}")" class="btn btn-link">Edit</a>

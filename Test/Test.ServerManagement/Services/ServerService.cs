@@ -75,7 +75,8 @@ namespace Test.ServerManagement.Services
         {
             if (serverDto is null) return false;
 
-            var updateServer = await _context.Servers.AsNoTracking()
+            var updateServer = await _context.Servers
+                //.AsNoTracking()
                 .FirstOrDefaultAsync(s=>s.ServerId == serverDto.ServerId);
 
             if (updateServer is null) return false;
@@ -83,13 +84,13 @@ namespace Test.ServerManagement.Services
             var cityId = await _context.Cities.AsNoTracking()
                 .Where(x => x.Name == serverDto.City)
                 .Select(x => x.CityId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(); 
 
             updateServer.CityId = cityId;
             updateServer.Name = serverDto.Name;
             updateServer.IsOnline = serverDto.IsOnline;
 
-            _context.Entry(updateServer).State = EntityState.Modified;
+            //_context.Entry(updateServer).State = EntityState.Modified;
             var result = await _context.SaveChangesAsync();
             return result >= 1 ? true : false;
         }
