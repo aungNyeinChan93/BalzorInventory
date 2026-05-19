@@ -20,7 +20,7 @@ namespace Test.ServerManagement.Services
         {
             var responseModel = new BaseResponsModel<List<ServerDto>> { };
             var servers = await _context.Servers.AsNoTracking()
-                .Include(s=>s.City)
+                .Include(s => s.City)
                 .Select(s => new ServerDto
                 {
                     ServerId = s.ServerId,
@@ -51,9 +51,9 @@ namespace Test.ServerManagement.Services
         public async Task<BaseResponsModel<ServerDto>> GetByIdAsync(int id)
         {
             var server = await _context.Servers.AsNoTracking()
-                .Include(s=>s.City)
-                .Where(s=>s.ServerId == id)
-                .Select(s=> new ServerDto
+                .Include(s => s.City)
+                .Where(s => s.ServerId == id)
+                .Select(s => new ServerDto
                 {
                     Name = s.Name,
                     City = s.City!.Name,
@@ -67,7 +67,7 @@ namespace Test.ServerManagement.Services
                 ResponseCode = 200,
                 ResponseStatus = true,
                 ResponseMessage = "success",
-                Data= server
+                Data = server
             };
         }
 
@@ -77,14 +77,17 @@ namespace Test.ServerManagement.Services
 
             var updateServer = await _context.Servers
                 //.AsNoTracking()
-                .FirstOrDefaultAsync(s=>s.ServerId == serverDto.ServerId);
+                .FirstOrDefaultAsync(s => s.ServerId == serverDto.ServerId);
 
             if (updateServer is null) return false;
-           
+
             var cityId = await _context.Cities.AsNoTracking()
                 .Where(x => x.Name == serverDto.City)
                 .Select(x => x.CityId)
-                .FirstOrDefaultAsync(); 
+                .FirstOrDefaultAsync();
+
+            if (cityId <=0) return false;
+
 
             updateServer.CityId = cityId;
             updateServer.Name = serverDto.Name;

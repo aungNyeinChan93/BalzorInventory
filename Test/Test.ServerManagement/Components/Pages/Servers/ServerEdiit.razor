@@ -8,6 +8,11 @@
 <section>
     <h3>ServerEdiit - @Id || @PageNumber</h3>
 
+    @if (IsNotAnyChange)
+    {
+        <p class="text-danger">Something wrong!</p>
+    }
+
     <EditForm Model="Server" FormName="serverEdit" OnValidSubmit="UpdateServer">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
@@ -15,20 +20,20 @@
         <input type="hidden" @bind-value="@Server.ServerId"/>
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input @bind-value="Server.Name" type="text" class="form-control" id="name">
-        </div>
-        <div class="mb-3">
-            <input type="checkbox" checked="@Server.IsOnline" @bind-value="Server.IsOnline"/>
+            <InputText @bind-value="Server.Name" type="text" class="form-control" id="name" />
         </div>
         <div class="mb-3">
             <select @bind="Server.City" class="form-select" aria-label="Default select example">
-                <option selected>Open this select menu</option>
+                <option selected>Choose SomeThing</option>
                 @foreach (var city in Cities)
                 {
                     <option value="@city.Name">@city.Name</option>
                 }
                 
             </select>
+        </div>
+        <div class="mb-3">
+            <InputCheckbox type="checkbox" checked="@Server.IsOnline" @bind-value="Server.IsOnline"/>
         </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-warning">Edit Server </button>
@@ -46,6 +51,8 @@
 
 
 @code {
+    public bool IsNotAnyChange { get; set; } = false;
+
     [Parameter]
     public int Id { get; set; }
 
@@ -94,6 +101,10 @@
         if (result)
         {
             _NavigationManager.NavigateTo("/servers");
+        }
+        else
+        {
+            IsNotAnyChange = true;
         }
     }
 }
